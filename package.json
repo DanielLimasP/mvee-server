@@ -1,0 +1,33 @@
+{
+  "name": "mvee-server",
+  "version": "1.0.0",
+  "description": "RESTful services for mvee app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env JWT_SECRET=newloginuser nodemon server.js"
+  },
+  "keywords": [
+    "node",
+    "movies",
+    "javascript",
+    "mongo",
+    "reactions"
+  ],
+  "author": "Daniel Limas",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cloudinary": "^1.22.0",
+    "connect-multiparty": "^2.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.18"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "nodemon": "^2.0.4"
+  }
+}
