@@ -4,12 +4,12 @@ const bcrypt = require('bcryptjs')
 
 const UserSchema = new Schema({
     nickname: {type: String, required: true},
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
+    firstname: {type: String, required: true},
+    lastname: {type: String, required: true},
     email: {type: String, required: true},
     password: {type: String, required: true},
     description: {type: String, required: false},
-    profileImg: {type: String, required: true},
+    profileImg: {type: String, required: false},
     userRating: {type: Number, required: false}
 })
 
@@ -19,8 +19,8 @@ UserSchema.methods.encryptPassword = async (password) => {
     return hash
 }
 
-UserSchema.methods.matchPAssword = async (password) => {
-    return await bcrypt.compare(password, this.password)
+UserSchema.methods.matchPassword = async (password, storedPassword) => {
+    return await bcrypt.compare(password, storedPassword)
 }
 
 module.exports = mongoose.model('User', UserSchema)

@@ -1,10 +1,10 @@
 // Mongodb connection file
 
 const mongoose = require('mongoose')
-const url = 'mongodb://localhost:mvee-db'
+const url = 'mongodb://localhost/mveedb'
 
 mongoose.connect(url, {
-    useCreateIndez: true,
+    useCreateIndex: true,
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true
