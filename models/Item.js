@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
+const locationSchema = new Schema({
+    LATITUDE: {type: String, required: true},
+    LONGITUDE: {type: String, required: true}
+})
+
 const ItemSchema = new Schema({
     name: {type: String, required: true},
     owner: {type: String, required: true},
@@ -12,7 +17,4 @@ const ItemSchema = new Schema({
     tradeable: {type: Boolean, required: true}
 })
 
-const locationSchema = new Schema({
-    LATITUDE: {type: String, required: true},
-    LONGITUDE: {type: String, required: true}
-})
+module.exports = mongoose.model('Item', ItemSchema)

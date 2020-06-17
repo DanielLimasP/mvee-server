@@ -1,4 +1,4 @@
-const Item = require('../models/Item')
+const ItemModel = require('../models/Item')
 // Idealy, we will be using jwt with every single route
 const jwt = require('jsonwebtoken')
 const cloudinary = require('cloudinary').v2
@@ -44,7 +44,7 @@ async function addItem(req, res){
         return res.status(400).send({message: 'You must upload at least one image with your item!!!'})
     }
     images = urlArray
-    const newItem = new Item({name, owner, description, category, images, location, value, tradeable})
+    const newItem = new ItemModel({name, owner, description, category, images, location, value, tradeable})
     await newItem.save()
     console.log({message: `Item ${name} has been saved!`})
     return res.status(200).send({message: `Item ${name} has been saved!`})
