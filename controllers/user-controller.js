@@ -6,6 +6,7 @@ const fs = require('fs')
 const { verify } = require('crypto')
 const { models } = require('mongoose')
 const middle = require('../middleware/verifyToken')
+const { decode } = require('punycode')
 
 // Cloudinary configuration
 cloudinary.config({
@@ -51,6 +52,7 @@ async function signUp(req, res){
         const newUser = new User({nickname, firstname, lastname, email, password, description, profileImg, userRating})
         newUser.password = await newUser.encryptPassword(password)
         await newUser.save()
+        console.log({message: `User ${nickname} has been created`})
         return res.status(200).send({message: `User ${nickname} has been created`})
     }
 }
@@ -66,9 +68,11 @@ async function signIn(req, res){
     }else{
         const passwordMatch = await user.matchPassword(userPassword, user.password)
         if(passwordMatch){
-            let token = jwt.sign({email: user.email}, process.env.JWT_SECRET, {expiresIn: 864000})
+            let token = jwt.sign({id: user._id, nickname: user.nickname, email: user.email}, process.env.JWT_SECRET, {expiresIn: 864000})
+            console.log({auth: true, message: 'user authenticated', authToken: token})
             return res.status(200).send({auth: true, message: 'user authenticated', authToken: token})
         }else{
+            console.log({auth: false, message: 'Incorrect password!'})
             return res.status(401).send({auth: false, message: 'Incorrect password!'})
         }
     }
@@ -79,27 +83,27 @@ function logOut(req, res){
     return res.status(200).send({auth: false, token: null})
 }
 
-function getCurrentUser(req, res){
-    let token = req.headers['authorization']
+function getCurrentUser(req, res, next){
+    let token = req.headers['x-access-token']
+    //console.log(token)
     if(!token){
         return res.status(401).send({auth: false, message: 'No token provided'})
     }else{
-        let fields = ['id', 'nickname', 'email']
-        // TODO: Write verifyToken function
-        middle.verifyToken(token)
-            .then((decoded) => {
-                models.findOne({id: decoded.id})
-            })
-            .then((user) => {
-                if(!user){
-                    return res.status(401).send({auth: false, message: 'No user found'})
-                }else{
-                    res.status(200).send({message: 'User found!', user: user})
-                }
-            })
-            .catch((err) => {
-                res.status(500).send({message: `There was an error! ${err}`})
-            })
+        jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+            if(err){
+                return res.status(500).send({auth: false, message: `Failed to authenticate the token provided! ${err}`})
+            }else{
+               const user = await User.findOne({email: decoded.email})
+               if(!user){
+                   console.log({auth: false, message: 'No user found'})
+                   return res.status(404).send({auth: false, message: 'No user found'})
+               }else{
+                   console.log("Token validated!", token)
+                   console.log({auth: true, message: 'User found!', id: user._id, user: user.nickname})
+                   return res.status(200).send({auth: true, message: 'Token validated and user found!', id: user._id, user: user.nickname})
+               }
+            }
+        })
     }
 }
 

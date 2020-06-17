@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 // Routes: Create the files later
 //const chats = require('./routes/chats')
 const users = require('./routes/user-routes')
-//const reactions = require('./routes/reactions')
+//const items = require('./routes/items')
 //const admin = require('./routes/admin')
 
 //app.use('/chat', chat)
