@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const cloudinary = require('cloudinary').v2
 const random = require('meteor-random')
 const fs = require('fs')
+const Item = require('../models/Item')
 // Cloudinary configuration
 cloudinary.config({
     cloud_name:'dz6pgtx3t',
@@ -35,7 +36,8 @@ async function addItem(req, res){
                 }else{
                     imgUrl = res.url
                     urlArray.push(imgUrl)
-                    fs.unlinkSync(path)
+                    // unlinkSync deletes the goddamn image!
+                    //fs.unlinkSync(path)
                 }
             })
         }
@@ -50,6 +52,23 @@ async function addItem(req, res){
     return res.status(200).send({message: `Item ${name} has been saved!`})
 }
 
+async function getAllItems(req, res){
+    const itemCollection = await Item.find()
+    const count = await Item.countDocuments({})
+    console.log({message: `Items found: ${count}`, itemCollection: itemCollection})
+    return res.status(200).send({message: `Items found ${count}`, itemCollection: itemCollection})
+}
+
+async function getItemsByUser(req, res){
+    const id = req.body.id
+    const itemCollection = await Item.find({owner: id})
+    const count = await Item.countDocuments({})
+    console.log({owner: id, message: `Items found: ${count}`, itemCollection: itemCollection})
+    return res.status(200).send({owner:id, message: `Items found ${count}`, itemCollection: itemCollection})
+}
+
 module.exports = {
-    addItem
+    addItem,
+    getAllItems,
+    getItemsByUser
 }
