@@ -26,7 +26,7 @@ async function signUp(req, res){
         profileImg, 
         userRating
     } = req.body
-    console.log("Body of the signUp request")
+    console.log("Body of the sign up request")
     console.log(req.body)
     const user = await User.findOne({email: email})
     if(user){
@@ -47,7 +47,7 @@ async function signUp(req, res){
         }else{
             imgUrl = "https://res.cloudinary.com/dz6pgtx3t/image/upload/v1592265927/mvee/genericUser_o6pgfa.png"
         }
-        console.log("Image uploaded to cludinary!", imgUrl)
+        console.log("Image uploaded to cloudinary!", imgUrl)
         profileImg = imgUrl
         const newUser = new User({nickname, firstname, lastname, email, password, description, profileImg, userRating})
         newUser.password = await newUser.encryptPassword(password)
@@ -58,7 +58,7 @@ async function signUp(req, res){
 }
 
 async function signIn(req, res){
-    console.log("Body of the signIn request")
+    console.log("Body of the sign in request")
     console.log(req.body)
     let userEmail = req.body.email
     let userPassword = req.body.password

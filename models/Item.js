@@ -8,7 +8,7 @@ const ItemSchema = new Schema({
     category: {type: String, required: true},
     images: {type: [String]},
     location: {type: locationSchema, required: true}, 
-    value: {type: String, required: true},
+    value: {type: Number, required: true},
     tradeable: {type: Boolean, required: true}
 })
 
