@@ -83,6 +83,8 @@ function logOut(req, res){
     return res.status(200).send({auth: false, token: null})
 }
 
+// TODO: Implement route security using jsonwebtoken
+// Function getCurrentUser is an example of how JSON webtoken works. Let's try and implement this through the project
 function getCurrentUser(req, res, next){
     let token = req.headers['x-access-token']
     //console.log(token)

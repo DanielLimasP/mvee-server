@@ -1,5 +1,17 @@
-JSON Web Token and Auth
--Use jsonwebtoken for auth...
+Project description:
+mvee is an application to sell or trade items of aproximately the same value, within Chihuahua Chihuahua Mexico.
+Idealy, you would post your own Item, and wait for offers to either trade or sell your item. 
+	Items will have the following atributes:
+		-Name
+		-Owner: ID
+		-Brief description
+		-Item type or category: Electronics, tools, clothing, etc
+		-Descriptive image or set of images
+		-Location: Comprised of LAT and LON		
+		-Asking price, estimated price or estimated value
+		-Accepts trades?
+
+TODO:
 -Write a whole lot of stuff
 -Research writing automated tests 
 	https://codeforgeek.com/unit-testing-nodejs-application-using-mocha/
