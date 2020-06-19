@@ -1,5 +1,5 @@
 const ItemModel = require('../models/Item')
-// Idealy, we will be using jwt with every single route
+// Ideally, we would be using jwt with every single route
 const jwt = require('jsonwebtoken')
 const cloudinary = require('cloudinary').v2
 const random = require('meteor-random')
@@ -67,8 +67,63 @@ async function getItemsByUser(req, res){
     return res.status(200).send({owner:id, message: `Items found ${count}`, itemCollection: itemCollection})
 }
 
+async function removeItemById(req, res){
+    const id = req.body.id
+    await Item.deleteOne({_id: id})
+    console.log({message: 'The item has been removed!'})
+    return res.status(200).send({message: 'The item has been removed!'})
+}
+
+// Parallel function to removeById. Does the same, but in a different way.
+async function removeItemByName(req, res){
+    const name = req.body.name
+    await Item.deleteOne({name: name})
+    console.log({message: 'The item has been removed!'})
+    return res.status(200).send({message: 'The item has been removed!'})
+}
+
+// Ideally, the update function would only update the required fields. However
+// we update the whole document...
+async function updateItembyId(req, res){
+    let {
+        id,
+        name, 
+        owner, 
+        description, 
+        category,
+        images, 
+        location, 
+        value, 
+        tradeable
+    } = req.body
+    console.log("Body of the update item req")
+    console.log(req.body)
+    const updatedItem = new ItemModel({name, owner, description, category, images, location, value, tradeable})
+    const condition = {_id: id}
+    // We are not using replacement object but who cares?
+    const replacementObject = {
+        name: name,
+        owner: owner,
+        description: description,
+        category: category,
+        images: images,
+        location: location,
+        value: value,
+        tradeable: tradeable
+    }
+    await ItemModel.findOneAndReplace(condition, updatedItem)
+    console.log({message: `Item ${name} has been updated!`})
+    console.log({message: `Item ${name} has been updated!`, item: updatedItem})
+    return res.status(200).send({message: `Item ${name} has been updated!`, item: updatedItem})
+}
+
+async function updatePhotos(){
+    // TODO: Write function to update photos 
+}
+
 module.exports = {
     addItem,
     getAllItems,
-    getItemsByUser
+    getItemsByUser,
+    removeItemById
 }
