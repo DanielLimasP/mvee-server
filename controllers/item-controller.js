@@ -111,10 +111,10 @@ async function updateItembyId(req, res){
         value: value,
         tradeable: tradeable
     }
-    await ItemModel.findOneAndReplace(condition, updatedItem)
+    await ItemModel.updateOne(condition, {$set: replacementObject})
     console.log({message: `Item ${name} has been updated!`})
-    console.log({message: `Item ${name} has been updated!`, item: updatedItem})
-    return res.status(200).send({message: `Item ${name} has been updated!`, item: updatedItem})
+    console.log({message: `Item ${name} has been updated!`, item: replacementObject})
+    return res.status(200).send({message: `Item ${name} has been updated!`, item: replacementObject})
 }
 
 async function updatePhotos(){
@@ -125,5 +125,6 @@ module.exports = {
     addItem,
     getAllItems,
     getItemsByUser,
-    removeItemById
+    removeItemById,
+    updateItembyId
 }
