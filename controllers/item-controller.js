@@ -117,8 +117,34 @@ async function updateItembyId(req, res){
     return res.status(200).send({message: `Item ${name} has been updated!`, item: replacementObject})
 }
 
-async function updatePhotos(){
-    // TODO: Write function to update photos 
+async function updatePhotos(req, res){
+    // TODO: Erase the TODO
+    const id = req.body.id
+    let newImages = req.body.images
+    if(newImages.length > 0){
+        urlArray = []
+        for(let i = 0; i < newImages.length; i++){
+            const path = newImages[i]
+            const uniqueFileName = Random.id()
+            await cloudinary.uploader.upload(path, {public_id: `mvee/${uniqueFileName}`, tags: 'mvee'}, (err, res ) => {
+                if(err){
+                    console.log(err)
+                }else{
+                    imgUrl = res.url
+                    urlArray.push(imgUrl)
+                    // unlinkSync deletes the goddamn image!
+                    //fs.unlinkSync(path)
+                }
+            })
+        }
+    }else{
+        console.log(`User didn't upload any pictures! Bad request`)
+        return res.status(400).send({message: 'You must upload at least one image for the update!!!'})
+    }
+    const condition = {_id: id}
+    await ItemModel.updateOne(condition, {$set: {images: urlArray}})
+    console.log({message: 'The images have been updated...'})
+    return res.status(200).send({message: 'The images have been updated...'})
 }
 
 module.exports = {
@@ -126,5 +152,6 @@ module.exports = {
     getAllItems,
     getItemsByUser,
     removeItemById,
-    updateItembyId
+    updateItembyId,
+    updatePhotos
 }
