@@ -1,6 +1,7 @@
-let router = require('express').Router()
-let itemController = require('../controllers/item-controller')
+const router = require('express').Router()
+const itemController = require('../controllers/item-controller')
 
+// Routes for the items
 router.post('/additem', itemController.addItem)
 router.get('/getallitems', itemController.getAllItems)
 router.post('/getitemsbyuser', itemController.getItemsByUser)
