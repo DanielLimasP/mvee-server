@@ -12,16 +12,16 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
 // Routes: Create the files later
-//const chats = require('./routes/chats')
+const chats = require('./routes/chat-routes')
 const users = require('./routes/user-routes')
-//const opinions = require('./routes/opinion') 
 const items = require('./routes/item-routes')
+//const opinions = require('./routes/opinion') 
 //const admin = require('./routes/admin')
 
-//app.use('/chat', chat)
-//app.use('./opinions', opinions)
+app.use('/chats', chats)
 app.use('/users', users)
 app.use('/items', items)
+//app.use('./opinions', opinions)
 //app.use('/admin', admin)
 
 module.exports = app

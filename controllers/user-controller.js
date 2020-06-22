@@ -68,7 +68,7 @@ async function signIn(req, res){
     }else{
         const passwordMatch = await user.matchPassword(userPassword, user.password)
         if(passwordMatch){
-            let token = jwt.sign({id: user._id, nickname: user.nickname, email: user.email}, process.env.JWT_SECRET, {expiresIn: 864000})
+            let token = jwt.sign({id: user._id, nickname: user.nickname}, process.env.JWT_SECRET, {expiresIn: 864000})
             console.log({auth: true, message: 'user authenticated', authToken: token})
             return res.status(200).send({auth: true, message: 'user authenticated', authToken: token})
         }else{
@@ -86,7 +86,7 @@ function logOut(req, res){
 // TODO: Implement route security using jsonwebtoken
 // Function getCurrentUser is an example of how JSON webtoken works. Let's try and implement this through the project
 function getCurrentUser(req, res, next){
-    let token = req.headers['x-access-token']
+    const token = req.headers['x-access-token']
     //console.log(token)
     if(!token){
         return res.status(401).send({auth: false, message: 'No token provided'})
@@ -95,7 +95,7 @@ function getCurrentUser(req, res, next){
             if(err){
                 return res.status(500).send({auth: false, message: `Failed to authenticate the token provided! ${err}`})
             }else{
-               const user = await User.findOne({email: decoded.email})
+               const user = await User.findOne({_id: decoded.id})
                if(!user){
                    console.log({auth: false, message: 'No user found'})
                    return res.status(404).send({auth: false, message: 'No user found'})
