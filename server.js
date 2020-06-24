@@ -15,7 +15,7 @@ app.use(bodyParser.json())
 const chats = require('./routes/chat-routes')
 const users = require('./routes/user-routes')
 const items = require('./routes/item-routes')
-//const opinions = require('./routes/opinion') 
+//const opinions = require('./routes/opinion-routes') 
 //const admin = require('./routes/admin')
 
 app.use('/chats', chats)

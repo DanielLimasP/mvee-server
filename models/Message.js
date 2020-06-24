@@ -5,7 +5,7 @@ const { Schema } = mongoose
      sender: {type: String, required: true},
      addressee: {type: String, required: true},
      msg: {type: String, required: true},
-     sentDate: { type: String, required: true} 
+     sentDate: { type: Date, required: true} 
  })
 
  module.exports = mongoose.model('Message', messageSchema)
